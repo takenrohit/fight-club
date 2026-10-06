@@ -7,11 +7,18 @@ export type Move = {
     cursedEnergy: number;
 }
 
+export type Passive = {
+    id: string;
+    name: string;
+    description: string;
+}
+
 export type Character = {
     id: string;
     name: string;
     maxHp: number;
     maxCursedEnergy: number;
+    passive: Passive;
     moves: Move[];
 }
 
