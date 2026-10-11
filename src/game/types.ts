@@ -1,4 +1,4 @@
-export type MoveType = "attack" | "heal" | "defend";
+export type MoveType = "attack" | "heal";
 
 export type Move = {
     id: string;
