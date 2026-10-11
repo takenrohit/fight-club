@@ -15,6 +15,7 @@ export const characters: Character[] = [
             {
                 id: "blue",
                 name: "Blue",
+                type: "attack",
                 damage: 20,
                 accuracy: 85,
                 critRate: 15,
@@ -23,6 +24,7 @@ export const characters: Character[] = [
             {
                 id: "red",
                 name: "Red",
+                type: "attack",
                 damage: 20,
                 accuracy: 80,
                 critRate: 20,
@@ -31,6 +33,7 @@ export const characters: Character[] = [
             {
                 id: "hollow_purple",
                 name: "Hollow Purple",
+                type: "attack",
                 damage: 50,
                 accuracy: 100,
                 critRate: 0,
@@ -39,6 +42,7 @@ export const characters: Character[] = [
             {
                 id: "void",
                 name: "Infinite Void",
+                type: "attack",
                 damage: 60,
                 accuracy: 100,
                 critRate: 100,
@@ -47,10 +51,11 @@ export const characters: Character[] = [
             {
                 id: "rct",
                 name: "RCT",
-                damage: 0,
+                type: "heal",
+                heal: 30,
                 accuracy: 100,
                 critRate: 0,
-                cursedEnergy: -50,
+                cursedEnergy: 30,
             },
         ],
     },
@@ -68,14 +73,16 @@ export const characters: Character[] = [
             {
                 id: "cleave",
                 name: "Cleave",
+                type: "attack",
                 damage: 20,
                 accuracy: 85,
                 critRate: 15,
                 cursedEnergy: 10,
             },
             {
-                id: " Dismantle",
+                id: "dismantle",
                 name: "Dismantle",
+                type: "attack",
                 damage: 20,
                 accuracy: 80,
                 critRate: 20,
@@ -84,6 +91,7 @@ export const characters: Character[] = [
             {
                 id: "malevolent_shrine",
                 name: "Malevolent Shrine",
+                type: "attack",
                 damage: 50,
                 accuracy: 90,
                 critRate: 50,
@@ -92,10 +100,11 @@ export const characters: Character[] = [
             {
                 id: "rct",
                 name: "RCT",
-                damage: 0,
+                type: "heal",
+                heal: 30,
                 accuracy: 100,
                 critRate: 0,
-                cursedEnergy: -50,
+                cursedEnergy: 30,
             },
         ],
     },
@@ -113,6 +122,7 @@ export const characters: Character[] = [
             {
                 id: "punch",
                 name: "Soul Punch",
+                type: "attack",
                 damage: 20,
                 accuracy: 85,
                 critRate: 15,
@@ -121,6 +131,7 @@ export const characters: Character[] = [
             {
                 id: "blood_manipulation",
                 name: "Blood Manipulation",
+                type: "attack",
                 damage: 20,
                 accuracy: 80,
                 critRate: 20,
@@ -129,6 +140,7 @@ export const characters: Character[] = [
             {
                 id: "divergent_fist",
                 name: "Divergent Fist",
+                type: "attack",
                 damage: 40,
                 accuracy: 95,
                 critRate: 20,
@@ -137,10 +149,11 @@ export const characters: Character[] = [
             {
                 id: "rct",
                 name: "RCT",
-                damage: 0,
+                type: "heal",
+                heal: 30,
                 accuracy: 100,
                 critRate: 0,
-                cursedEnergy: -50,
+                cursedEnergy: 30,
             },
         ],
     }

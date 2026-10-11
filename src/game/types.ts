@@ -1,7 +1,11 @@
+export type MoveType = "attack" | "heal" | "defend";
+
 export type Move = {
     id: string;
     name: string;
-    damage: number;
+    type: MoveType;
+    damage?: number;
+    heal?: number;
     accuracy: number;
     critRate: number;
     cursedEnergy: number;
