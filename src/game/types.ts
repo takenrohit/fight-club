@@ -1,7 +1,11 @@
+export type MoveType = "attack" | "heal";
+
 export type Move = {
     id: string;
     name: string;
-    damage: number;
+    type: MoveType;
+    damage?: number;
+    heal?: number;
     accuracy: number;
     critRate: number;
     cursedEnergy: number;
@@ -18,7 +22,7 @@ export type Character = {
     name: string;
     maxHp: number;
     maxCursedEnergy: number;
-    passive: Passive;
+    passive?: Passive;
     moves: Move[];
 }
 
