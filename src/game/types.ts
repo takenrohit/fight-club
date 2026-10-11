@@ -18,7 +18,7 @@ export type Character = {
     name: string;
     maxHp: number;
     maxCursedEnergy: number;
-    passive: Passive;
+    passive?: Passive;
     moves: Move[];
 }
 
