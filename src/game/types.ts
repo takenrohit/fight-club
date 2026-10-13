@@ -33,7 +33,7 @@ export type LogEntry = {
 }
 
 export type CombatResult = {
-    type: "hit" | "miss" | "crit" | "heal";
+    type: "hit" | "miss" | "crit" | "heal" | "blocked";
     message: string;
     damage?: number;
     heal?: number;
