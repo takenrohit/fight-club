@@ -18,7 +18,7 @@ export function performMove(
     if (move.type === "attack") {
         const accuracy = Math.random() * 100;
 
-        const isHit = accuracy <= move.accuracy;
+        const isHit = accuracy < move.accuracy;
 
         if (!isHit) {
             return {
@@ -29,10 +29,22 @@ export function performMove(
 
         const crit = Math.random() * 100;
 
-        const isCrit = crit <= move.critRate;
+        const isCrit = crit < move.critRate;
         const damage = isCrit
             ? Math.round((move.damage ?? 0) * 1.5)
             : move.damage ?? 0;
+
+        if (defender.character.passive?.id === "infinity") {
+            const blocked = Math.random() < 0.2;
+
+            if (blocked) {
+                return {
+                    type: "blocked",
+                    message: `${defender.character.name} blocked the attack with infinity!`,
+                    damage: 0,
+                }
+            }
+        }
 
         defender.hp = Math.max(0, defender.hp - damage);
 
