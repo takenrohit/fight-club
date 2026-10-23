@@ -199,7 +199,9 @@ export default function Home() {
                 </div>
 
                 <div className="overflow-hidden rounded-xl border border-white/10">
-                    <Arena />
+                    <Arena
+                        player1Id={player1.character.id}
+                        player2Id={player2.character.id} />
                 </div>
 
                 {battle && (
