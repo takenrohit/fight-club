@@ -1,7 +1,8 @@
 "use client";
 
+import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { ContactShadows, OrbitControls } from "@react-three/drei";
+import { ContactShadows, OrbitControls, useGLTF } from "@react-three/drei";
 
 function Fighter({
     position,
@@ -49,7 +50,68 @@ function Fighter({
     );
 }
 
-export default function Arena() {
+type ArenaProps = {
+    player1Id: string;
+    player2Id: string;
+};
+
+function CharacterModel({
+    id,
+    position,
+}: {
+    id: string;
+    position: [number, number, number];
+}) {
+    const modelSettings: Record<
+        string,
+        { path: string; scale: number; rotationY: number; y: number }
+    > = {
+        gojo: {
+            path: "/models/gojo.glb",
+            scale: 1,
+            rotationY: Math.PI / 2,
+            y: 0,
+        },
+        sukuna: {
+            path: "/models/sukuna.glb",
+            scale: 0.25,
+            rotationY: -Math.PI / 2,
+            y: 0,
+        },
+        yuji: {
+            path: "/models/yuji.glb",
+            scale: 1,
+            rotationY: Math.PI / 2,
+            y: 0,
+        },
+    };
+
+    const settings = modelSettings[id] ?? modelSettings.gojo;
+    const { scene } = useGLTF(settings.path);
+
+    return (
+        <group position={position}>
+            <primitive
+                object={scene}
+                scale={settings.scale}
+                position={[0, settings.y, 0]}
+                rotation={[0, settings.rotationY, 0]}
+            />
+        </group>
+    );
+}
+
+
+export default function Arena({ player1Id, player2Id }: ArenaProps) {
+    const characterColors: Record<string, string> = {
+        gojo: "#e5e7eb",
+        sukuna: "#991b1b",
+        yuji: "#ea580c",
+    };
+
+    const player1Color = characterColors[player1Id] ?? "#6366f1";
+    const player2Color = characterColors[player2Id] ?? "#9333ea";
+
     return (
         <div className="h=[500px] w-full overflow-hidden rounded-x1 bg-slate-950">
             <Canvas camera={{ position: [0, 4, 9], fov: 45 }} shadows>
@@ -94,8 +156,10 @@ export default function Arena() {
                     castShadow
                 />
 
-                <Fighter position={[-2, 0, 0]} color="#e5e7eb" />
-                <Fighter position={[2, 0, 0]} color="#991b1b" />
+                <Suspense fallback={null}>
+                    <CharacterModel id={player1Id} position={[-2, 0, 0]} />
+                    <CharacterModel id={player2Id} position={[2, 0, 0]} />
+                </Suspense>
 
                 <ContactShadows
                     position={[0, 0, 0]}
