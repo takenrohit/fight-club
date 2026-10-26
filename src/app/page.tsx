@@ -1,5 +1,8 @@
 "use client";
 
+import FighterPanel from "@/components/FighterPanel";
+import MoveButton from "@/components/MoveButton";
+import CombatLog from "@/components/CombatLog";
 import { useState } from "react";
 import { characters } from "@/game/characters";
 import {
@@ -38,7 +41,6 @@ export default function Home() {
 
         const result = executeTurn(battle, moveId);
 
-        // Create a new state object so React re-renders after the battle mutates.
         setBattle({ ...battle });
         setLastResult(result);
         setLogs((previous) => [...previous, result.message]);
@@ -65,55 +67,7 @@ export default function Home() {
         ? battle[battle.currentTurn]
         : null;
 
-    function FighterPanel({
-        name,
-        hp,
-        maxHp,
-        cursedEnergy,
-        maxCursedEnergy,
-        color,
-        alignRight = false,
-    }: {
-        name: string;
-        hp: number;
-        maxHp: number;
-        cursedEnergy: number;
-        maxCursedEnergy: number;
-        color: string;
-        alignRight?: boolean;
-    }) {
-        return (
-            <div className={`rounded-lg border ${color} bg-white/[0.03] p-4`}>
-                <p className={`text-xs font-bold tracking-widest text-gray-400 ${alignRight ? "text-right" : ""}`}>
-                    {name}
-                </p>
 
-                <div className={`mt-3 flex items-center justify-between gap-2 ${alignRight ? "flex-row-reverse" : ""}`}>
-                    <span className="text-sm font-semibold">HP</span>
-                    <span className="text-sm text-gray-300">{hp} / {maxHp}</span>
-                </div>
-                <div className="mt-1 h-2 overflow-hidden rounded-full bg-gray-800">
-                    <div
-                        className="h-full bg-red-500 transition-all"
-                        style={{ width: `${Math.max(0, (hp / maxHp) * 100)}%` }}
-                    />
-                </div>
-
-                <div className={`mt-3 flex items-center justify-between gap-2 ${alignRight ? "flex-row-reverse" : ""}`}>
-                    <span className="text-sm font-semibold">Cursed Energy</span>
-                    <span className="text-sm text-gray-300">
-                        {cursedEnergy} / {maxCursedEnergy}
-                    </span>
-                </div>
-                <div className="mt-1 h-2 overflow-hidden rounded-full bg-gray-800">
-                    <div
-                        className="h-full bg-indigo-500 transition-all"
-                        style={{ width: `${Math.max(0, (cursedEnergy / maxCursedEnergy) * 100)}%` }}
-                    />
-                </div>
-            </div>
-        );
-    }
 
     return (
         <main className="min-h-screen bg-[#080810] px-4 py-8 text-white sm:px-8">
@@ -185,7 +139,7 @@ export default function Home() {
                         maxHp={player1.character.maxHp}
                         cursedEnergy={player1.cursedEnergy}
                         maxCursedEnergy={player1.character.maxCursedEnergy}
-                        color="border-indigo-500/40"
+                        borderColor="border-indigo-500/40"
                     />
                     <FighterPanel
                         name={player2.character.name}
@@ -193,7 +147,7 @@ export default function Home() {
                         maxHp={player2.character.maxHp}
                         cursedEnergy={player2.cursedEnergy}
                         maxCursedEnergy={player2.character.maxCursedEnergy}
-                        color="border-red-500/40"
+                        borderColor="border-red-500/40"
                         alignRight
                     />
                 </div>
@@ -222,22 +176,12 @@ export default function Home() {
 
                                 <div className="mt-4 flex flex-wrap gap-3">
                                     {activeFighter?.character.moves.map((move) => (
-                                        <button
+                                        <MoveButton
                                             key={move.id}
+                                            move={move}
+                                            disabled={activeFighter.cursedEnergy < move.cursedEnergy}
                                             onClick={() => handleMove(move.id)}
-                                            disabled={
-                                                activeFighter.cursedEnergy < move.cursedEnergy
-                                            }
-                                            className="rounded-md border border-white/15 bg-white/5 px-4 py-3 text-left transition hover:border-red-500 hover:bg-red-950/40 disabled:cursor-not-allowed disabled:opacity-40"
-                                        >
-                                            <span className="block font-semibold">{move.name}</span>
-                                            <span className="mt-1 block text-xs text-gray-400">
-                                                {move.type === "heal"
-                                                    ? `Heal ${move.heal ?? 0}`
-                                                    : `Damage ${move.damage ?? 0}`}
-                                                {" · "}CE {move.cursedEnergy}
-                                            </span>
-                                        </button>
+                                        />
                                     ))}
                                 </div>
                             </>
@@ -249,13 +193,7 @@ export default function Home() {
                             </p>
                         )}
 
-                        <div className="mt-4 max-h-40 space-y-2 overflow-y-auto border-t border-white/10 pt-4">
-                            {logs.map((message, index) => (
-                                <p key={`${index}-${message}`} className="text-sm text-gray-400">
-                                    {message}
-                                </p>
-                            ))}
-                        </div>
+                        <CombatLog logs={logs} />
                     </section>
                 )}
             </section>
