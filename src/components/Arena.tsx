@@ -64,30 +64,35 @@ function CharacterModel({
 }) {
     const modelSettings: Record<
         string,
-        { path: string; scale: number; rotationY: number; y: number }
+        { path: string; scale: number; rotationOffset: number; y: number }
     > = {
         gojo: {
             path: "/models/gojo.glb",
             scale: 1,
-            rotationY: Math.PI / 2,
+            rotationOffset: 0,
             y: 0,
         },
         sukuna: {
             path: "/models/sukuna.glb",
             scale: 0.25,
-            rotationY: -Math.PI / 2,
+            rotationOffset: 0,
             y: 0,
         },
         yuji: {
             path: "/models/yuji.glb",
-            scale: 1,
-            rotationY: Math.PI / 2,
-            y: 0,
+            scale: 0.78,
+            rotationOffset: 0,
+            y: 1,
         },
     };
 
     const settings = modelSettings[id] ?? modelSettings.gojo;
     const { scene } = useGLTF(settings.path);
+
+    // Left fighter faces right; right fighter faces left.
+    const facingRotation =
+        (position[0] < 0 ? Math.PI / 2 : -Math.PI / 2) +
+        settings.rotationOffset;
 
     return (
         <group position={position}>
@@ -95,7 +100,7 @@ function CharacterModel({
                 object={scene}
                 scale={settings.scale}
                 position={[0, settings.y, 0]}
-                rotation={[0, settings.rotationY, 0]}
+                rotation={[0, facingRotation, 0]}
             />
         </group>
     );
@@ -113,7 +118,7 @@ export default function Arena({ player1Id, player2Id }: ArenaProps) {
     const player2Color = characterColors[player2Id] ?? "#9333ea";
 
     return (
-        <div className="h=[500px] w-full overflow-hidden rounded-x1 bg-slate-950">
+        <div className="h-[500px] w-full overflow-hidden rounded-xl bg-slate-950">
             <Canvas camera={{ position: [0, 4, 9], fov: 45 }} shadows>
                 <ambientLight intensity={1.2} />
                 <directionalLight
