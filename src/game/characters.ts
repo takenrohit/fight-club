@@ -9,7 +9,7 @@ export const characters: Character[] = [
         passive: {
             id: "infinity",
             name: "Infinity",
-            description: "",
+            description: "20% chance to completely block an incoming attack",
         },
         moves: [
             {
@@ -67,7 +67,7 @@ export const characters: Character[] = [
         passive: {
             id: "king_of_curses",
             name: "King of Curses",
-            description: "",
+            description: "when below 50% HP, attacks deal 25% more damage",
         },
         moves: [
             {
@@ -116,7 +116,7 @@ export const characters: Character[] = [
         passive: {
             id: "black_flash",
             name: "Black Flash",
-            description: "",
+            description: "10% chance on a non-crit hit to land a Black Flash: 1.5x damage and +15 CE",
         },
         moves: [
             {

@@ -41,4 +41,32 @@ describe("performMove", () => {
         expect(result.type).toBe("miss");
         expect(sukuna.hp).toBe(120);
     });
+
+    it("King of Curses boosts damage when Sukuna is below half HP", () => {
+        vi.spyOn(Math, "random").mockReturnValue(0.5);
+        const sukuna = makeFighter("sukuna");
+        const gojo = makeFighter("gojo");
+        sukuna.hp = 50;
+        const cleave = sukuna.character.moves.find((m) => m.id === "cleave")!;
+
+        performMove(sukuna, gojo, cleave);
+
+        expect(gojo.hp).toBe(95);
+    });
+
+    it("Black Flash deals 1.5x damage and refunds cursed energy", () => {
+        vi.spyOn(Math, "random")
+            .mockReturnValueOnce(0.1)
+            .mockReturnValueOnce(0.99)
+            .mockReturnValueOnce(0.05);
+        const yuji = makeFighter("yuji");
+        const sukuna = makeFighter("sukuna");
+        yuji.cursedEnergy = 50;
+        const punch = yuji.character.moves.find((m) => m.id === "punch")!;
+
+        performMove(yuji, sukuna, punch);
+
+        expect(sukuna.hp).toBe(80);
+        expect(yuji.cursedEnergy).toBe(55);
+    });
 });

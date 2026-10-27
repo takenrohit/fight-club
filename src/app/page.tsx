@@ -139,6 +139,7 @@ export default function Home() {
                         maxHp={player1.character.maxHp}
                         cursedEnergy={player1.cursedEnergy}
                         maxCursedEnergy={player1.character.maxCursedEnergy}
+                        passive={player1.character.passive}
                         borderColor="border-indigo-500/40"
                     />
                     <FighterPanel
@@ -148,6 +149,7 @@ export default function Home() {
                         cursedEnergy={player2.cursedEnergy}
                         maxCursedEnergy={player2.character.maxCursedEnergy}
                         borderColor="border-red-500/40"
+                        passive={player2.character.passive}
                         alignRight
                     />
                 </div>
