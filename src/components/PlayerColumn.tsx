@@ -36,12 +36,12 @@ export default function PlayerColumn({
                             </span>
                             <span
                                 className={`relative block aspect-[1/2] w-full overflow-hidden border-2 transition duration-200 ${selected
-                                        ? "scale-105 border-white shadow-[0_0_20px_rgba(255,255,255,0.8)]"
-                                        : "border-white/40 opacity-70 group-hover:scale-[1.03] group-hover:border-white group-hover:opacity-100"
+                                    ? "scale-105 border-white shadow-[0_0_20px_rgba(255,255,255,0.8)]"
+                                    : "border-white/40 opacity-70 group-hover:scale-[1.03] group-hover:border-white group-hover:opacity-100"
                                     }`}
                             >
                                 <Image
-                                    src={`/portraits/${c.id}.png`}
+                                    src={`/images/${c.id}.png`}
                                     alt={c.name}
                                     fill
                                     sizes="(min-width: 768px) 15vw, 30vw"

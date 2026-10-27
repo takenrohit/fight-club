@@ -1,19 +1,18 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
     return (
         <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black text-white">
-            <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                className="absolute inset-0 h-full w-full object-cover"
-            >
-                <source src="/videos/home.mp4" type="video/mp4" />
-            </video>
-            <div className="absolute inset-0 bg-black/50" />
+            <Image
+                src="/images/home-bg.png"
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover"
+            />
+            <div className="absolute inset-0 bg-black/30" />
 
             <div className="relative z-10 flex flex-col items-center gap-10 text-center">
                 <h1 className="font-display -skew-x-12 text-6xl tracking-wider [text-shadow:0_0_24px_rgba(255,255,255,0.5)] sm:text-8xl">
