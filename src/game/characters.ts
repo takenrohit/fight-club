@@ -9,7 +9,7 @@ export const characters: Character[] = [
         passive: {
             id: "infinity",
             name: "Infinity",
-            description: "",
+            description: "20% chance to completely block an incoming attack",
         },
         moves: [
             {
@@ -34,18 +34,18 @@ export const characters: Character[] = [
                 id: "hollow_purple",
                 name: "Hollow Purple",
                 type: "attack",
-                damage: 50,
+                damage: 30,
                 accuracy: 100,
-                critRate: 0,
+                critRate: 20,
                 cursedEnergy: 20,
             },
             {
                 id: "void",
                 name: "Infinite Void",
                 type: "attack",
-                damage: 60,
+                damage: 40,
                 accuracy: 100,
-                critRate: 100,
+                critRate: 10,
                 cursedEnergy: 40,
             },
             {
@@ -55,7 +55,7 @@ export const characters: Character[] = [
                 heal: 30,
                 accuracy: 100,
                 critRate: 0,
-                cursedEnergy: 30,
+                cursedEnergy: -40,
             },
         ],
     },
@@ -67,7 +67,7 @@ export const characters: Character[] = [
         passive: {
             id: "king_of_curses",
             name: "King of Curses",
-            description: "",
+            description: "when below 50% HP, attacks deal 25% more damage",
         },
         moves: [
             {
@@ -94,7 +94,7 @@ export const characters: Character[] = [
                 type: "attack",
                 damage: 50,
                 accuracy: 90,
-                critRate: 50,
+                critRate: 10,
                 cursedEnergy: 40,
             },
             {
@@ -104,7 +104,7 @@ export const characters: Character[] = [
                 heal: 30,
                 accuracy: 100,
                 critRate: 0,
-                cursedEnergy: 30,
+                cursedEnergy: -30,
             },
         ],
     },
@@ -116,7 +116,7 @@ export const characters: Character[] = [
         passive: {
             id: "black_flash",
             name: "Black Flash",
-            description: "",
+            description: "10% chance on a non-crit hit to land a Black Flash: 1.5x damage and +15 CE",
         },
         moves: [
             {
@@ -153,7 +153,7 @@ export const characters: Character[] = [
                 heal: 30,
                 accuracy: 100,
                 critRate: 0,
-                cursedEnergy: 30,
+                cursedEnergy: -30,
             },
         ],
     }

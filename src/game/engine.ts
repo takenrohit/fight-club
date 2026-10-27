@@ -1,4 +1,5 @@
 import type { Move, FighterState, CombatResult } from "./types";
+import { getHooks } from "./passives";
 
 export function performMove(
     attacker: FighterState,
@@ -16,9 +17,7 @@ export function performMove(
 
 
     if (move.type === "attack") {
-        const accuracy = Math.random() * 100;
-
-        const isHit = accuracy < move.accuracy;
+        const isHit = Math.random() * 100 < move.accuracy;
 
         if (!isHit) {
             return {
@@ -27,34 +26,44 @@ export function performMove(
             };
         }
 
-        const crit = Math.random() * 100;
+        const isCrit = Math.random() * 100 < move.critRate;
+        const ctx = { attacker, defender, move, isCrit };
 
-        const isCrit = crit < move.critRate;
-        const damage = isCrit
-            ? Math.round((move.damage ?? 0) * 1.5)
-            : move.damage ?? 0;
+        if (getHooks(defender).blocksAttack?.(ctx)) {
+            return {
+                type: "blocked",
+                message: `${defender.character.name} blocked the attack with ${defender.character.passive?.name}!`,
+                damage: 0,
+            };
+        }
 
-        if (defender.character.passive?.id === "infinity") {
-            const blocked = Math.random() < 0.2;
+        const baseDamage = move.damage ?? 0;
+        let damage = isCrit ? Math.round(baseDamage * 1.5) : baseDamage;
 
-            if (blocked) {
-                return {
-                    type: "blocked",
-                    message: `${defender.character.name} blocked the attack with infinity!`,
-                    damage: 0,
-                }
+        const notes: string[] = [];
+        const effect = getHooks(attacker).modifyDamage?.(ctx, damage);
+        if (effect) {
+            damage = effect.damage;
+            if (effect.message) notes.push(effect.message);
+            if (effect.ceRefund) {
+                attacker.cursedEnergy = Math.min(
+                    attacker.character.maxCursedEnergy,
+                    attacker.cursedEnergy + effect.ceRefund
+                );
             }
         }
 
         defender.hp = Math.max(0, defender.hp - damage);
 
+        const base = isCrit
+            ? `${attacker.character.name} used ${move.name} and landed a critical hit for ${damage} damage!`
+            : `${attacker.character.name} used ${move.name} and landed a hit for ${damage} damage!`;
+
         return {
             type: isCrit ? "crit" : "hit",
-            message: isCrit
-                ? `${attacker.character.name} used ${move.name} and landed a critical hit for ${damage} damage!`
-                : `${attacker.character.name} used ${move.name} and landed a hit for ${damage} damage!`,
-            damage
-        }
+            message: [base, ...notes].join(" "),
+            damage,
+        };
     }
     else {
         const healAmt = move.heal ?? 0;
