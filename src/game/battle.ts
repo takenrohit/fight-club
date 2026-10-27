@@ -11,6 +11,8 @@ export type BattleState = {
     winner: PlayerId | null;
 };
 
+const CE_REGEN_PER_TURN = 10;
+
 export function createBattle(
     character1: Character,
     character2: Character
@@ -81,9 +83,13 @@ export function executeTurn(
     }
 
     battle.currentTurn =
-        battle.currentTurn === "player1"
-            ? "player2"
-            : "player1";
+        battle.currentTurn === "player1" ? "player2" : "player1";
+
+    const next = battle[battle.currentTurn];
+    next.cursedEnergy = Math.min(
+        next.character.maxCursedEnergy,
+        next.cursedEnergy + CE_REGEN_PER_TURN
+    );
 
     return result;
 
