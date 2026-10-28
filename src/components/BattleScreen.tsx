@@ -49,7 +49,7 @@ export default function BattleScreen({ player1Id, player2Id }: BattleScreenProps
     return (
         <main className="min-h-screen bg-black px-4 py-8 text-white sm:px-8">
             <header className="mx-auto mb-8 max-w-6xl">
-                <h1 className="font-display -skew-x-12 text-4xl tracking-wider [text-shadow:0_0_24px_rgba(255,255,255,0.5)] sm:text-5xl">
+                <h1 className="font-display text-4xl tracking-wider [text-shadow:0_0_24px_rgba(255,255,255,0.5)] sm:text-5xl">
                     FIGHT <span className="text-red-600">CLUB</span>
                 </h1>
             </header>
@@ -85,7 +85,7 @@ export default function BattleScreen({ player1Id, player2Id }: BattleScreenProps
                 </div>
 
                 <section className="mt-6 border border-white/40 bg-white/[0.03] p-5">
-                    <h2 className="font-display -skew-x-12 text-xl tracking-wider">
+                    <h2 className="font-display text-xl tracking-wider">
                         Combat Controls
                     </h2>
 
@@ -129,23 +129,23 @@ export default function BattleScreen({ player1Id, player2Id }: BattleScreenProps
                         <p className="font-display -skew-x-12 text-sm tracking-[0.4em] text-red-600">
                             K.O.
                         </p>
-                        <h2 className="font-display mt-3 -skew-x-12 text-4xl [text-shadow:0_0_20px_rgba(255,255,255,0.6)] sm:text-5xl">
+                        <h2 className="font-display mt-3 text-4xl [text-shadow:0_0_20px_rgba(255,255,255,0.6)] sm:text-5xl">
                             {winner.character.name.toUpperCase()}
                         </h2>
-                        <p className="font-display mt-2 -skew-x-12 text-2xl tracking-widest">
+                        <p className="font-display mt-2 text-2xl tracking-widest">
                             WINS!
                         </p>
 
                         <div className="mt-8 flex flex-col gap-3">
                             <button
                                 onClick={rematch}
-                                className="font-display -skew-x-12 bg-white px-8 py-3 text-2xl tracking-widest text-black transition hover:bg-red-600 hover:text-white"
+                                className="font-display bg-white px-8 py-3 text-2xl tracking-widest text-black transition hover:bg-red-600 hover:text-white"
                             >
                                 RESTART
                             </button>
                             <Link
                                 href="/select"
-                                className="font-display -skew-x-12 border border-white/60 px-8 py-2 text-lg tracking-widest transition hover:bg-white/10"
+                                className="font-display border border-white/60 px-8 py-2 text-lg tracking-widest transition hover:bg-white/10"
                             >
                                 CHANGE FIGHTERS
                             </Link>
