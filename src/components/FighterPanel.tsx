@@ -43,21 +43,21 @@ export default function FighterPanel({
     name, hp, maxHp, cursedEnergy, maxCursedEnergy, borderColor, passive, alignRight = false,
 }: FighterPanelProps) {
     return (
-        <div className={`rounded-lg border ${borderColor} bg-white/[0.03] p-4`}>
-            <p className={`text-xs font-bold tracking-widest text-gray-400 ${alignRight ? "text-right" : ""}`}>
+        <div className={`border ${borderColor} bg-white/[0.03] p-4`}>
+            <p className={`font-display text-sm tracking-widest text-white ${alignRight ? "text-right" : ""}`}>
                 {name}
             </p>
 
             {passive && (
                 <div className={`mt-2 rounded-md bg-white/5 px-3 py-2 ${alignRight ? "text-right" : ""}`}>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-amber-400">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-red-500">
                         Passive · {passive.name}
                     </p>
                     <p className="mt-1 text-xs text-gray-400">{passive.description}</p>
                 </div>
             )}
-            <StatBar label="HP" value={hp} max={maxHp} barColor="bg-red-500" alignRight={alignRight} />
-            <StatBar label="Cursed Energy" value={cursedEnergy} max={maxCursedEnergy} barColor="bg-indigo-500" alignRight={alignRight} />
+            <StatBar label="HP" value={hp} max={maxHp} barColor="bg-red-600" alignRight={alignRight} />
+            <StatBar label="Cursed Energy" value={cursedEnergy} max={maxCursedEnergy} barColor="bg-white" alignRight={alignRight} />
         </div>
     );
 }

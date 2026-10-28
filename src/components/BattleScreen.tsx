@@ -44,21 +44,14 @@ export default function BattleScreen({ player1Id, player2Id }: BattleScreenProps
     const player1 = battle.player1;
     const player2 = battle.player2;
     const activeFighter = battle[battle.currentTurn];
+    const winner = battle.winner ? battle[battle.winner] : null;
 
     return (
-        <main className="min-h-screen bg-[#080810] px-4 py-8 text-white sm:px-8">
-            <header className="mx-auto mb-8 flex max-w-6xl items-center justify-between">
-                <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.35em] text-red-500">
-                        Jujutsu Combat
-                    </p>
-                    <h1 className="mt-2 text-4xl font-black tracking-wider sm:text-5xl">
-                        FIGHT <span className="text-red-600">CLUB</span>
-                    </h1>
-                </div>
-                <span className="rounded-md border border-red-900/70 px-4 py-2 text-xs font-bold tracking-widest text-red-400">
-                    PROTOTYPE
-                </span>
+        <main className="min-h-screen bg-black px-4 py-8 text-white sm:px-8">
+            <header className="mx-auto mb-8 max-w-6xl">
+                <h1 className="font-display -skew-x-12 text-4xl tracking-wider [text-shadow:0_0_24px_rgba(255,255,255,0.5)] sm:text-5xl">
+                    FIGHT <span className="text-red-600">CLUB</span>
+                </h1>
             </header>
 
             <section className="mx-auto max-w-6xl">
@@ -70,7 +63,7 @@ export default function BattleScreen({ player1Id, player2Id }: BattleScreenProps
                         cursedEnergy={player1.cursedEnergy}
                         maxCursedEnergy={player1.character.maxCursedEnergy}
                         passive={player1.character.passive}
-                        borderColor="border-indigo-500/40"
+                        borderColor="border-white/50"
                     />
                     <FighterPanel
                         name={player2.character.name}
@@ -79,48 +72,30 @@ export default function BattleScreen({ player1Id, player2Id }: BattleScreenProps
                         cursedEnergy={player2.cursedEnergy}
                         maxCursedEnergy={player2.character.maxCursedEnergy}
                         passive={player2.character.passive}
-                        borderColor="border-red-500/40"
+                        borderColor="border-red-600/70"
                         alignRight
                     />
                 </div>
 
-                <div className="overflow-hidden rounded-xl border border-white/10">
+                <div className="overflow-hidden border-2 border border-white/40">
                     <Arena
                         player1Id={player1.character.id}
                         player2Id={player2.character.id}
                     />
                 </div>
 
-                <section className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] p-5">
-                    <h2 className="text-lg font-bold">Combat Controls</h2>
+                <section className="mt-6 border border-white/40 bg-white/[0.03] p-5">
+                    <h2 className="font-display -skew-x-12 text-xl tracking-wider">
+                        Combat Controls
+                    </h2>
 
-                    {battle.status === "finished" ? (
-                        <>
-                            <p className="mt-3 font-semibold text-amber-300">
-                                Winner:{" "}
-                                {battle.winner === "player1"
-                                    ? battle.player1.character.name
-                                    : battle.player2.character.name}
-                            </p>
-                            <div className="mt-4 flex gap-3">
-                                <button
-                                    onClick={rematch}
-                                    className="rounded-md bg-red-600 px-4 py-2 font-bold hover:bg-red-500"
-                                >
-                                    Rematch
-                                </button>
-                                <Link
-                                    href="/select"
-                                    className="rounded-md border border-white/20 px-4 py-2 font-bold hover:bg-white/10"
-                                >
-                                    Change fighters
-                                </Link>
-                            </div>
-                        </>
-                    ) : (
+                    {battle.status === "playing" && (
                         <>
                             <p className="mt-2 text-sm text-gray-400">
-                                Current turn: {activeFighter.character.name}
+                                Current Turn:{" "}
+                                <span className="font-semibold text-white">
+                                    {activeFighter.character.name}
+                                </span>
                             </p>
 
                             <div className="mt-4 flex flex-wrap gap-3">
@@ -137,7 +112,7 @@ export default function BattleScreen({ player1Id, player2Id }: BattleScreenProps
                     )}
 
                     {lastResult && (
-                        <p className="mt-4 rounded-md bg-black/30 p-3 text-sm text-gray-200">
+                        <p className="mt-4 border-l-2 border-red-600 bg-black/40 p-3 text-sm text-gray-200">
                             {lastResult.message}
                         </p>
                     )}
@@ -145,6 +120,39 @@ export default function BattleScreen({ player1Id, player2Id }: BattleScreenProps
                     <CombatLog logs={logs} />
                 </section>
             </section>
+
+            {/* VICTORY WINDOW */}
+
+            {battle.status === "finished" && winner && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 backdrop-blur-sm">
+                    <div className="w-full max-w-md border-2 border-white bg-black px-8 py-10 text-center shadow-[0_0_40px_rgba(255,255,255,0.25)]">
+                        <p className="font-display -skew-x-12 text-sm tracking-[0.4em] text-red-600">
+                            K.O.
+                        </p>
+                        <h2 className="font-display mt-3 -skew-x-12 text-4xl [text-shadow:0_0_20px_rgba(255,255,255,0.6)] sm:text-5xl">
+                            {winner.character.name.toUpperCase()}
+                        </h2>
+                        <p className="font-display mt-2 -skew-x-12 text-2xl tracking-widest">
+                            WINS!
+                        </p>
+
+                        <div className="mt-8 flex flex-col gap-3">
+                            <button
+                                onClick={rematch}
+                                className="font-display -skew-x-12 bg-white px-8 py-3 text-2xl tracking-widest text-black transition hover:bg-red-600 hover:text-white"
+                            >
+                                RESTART
+                            </button>
+                            <Link
+                                href="/select"
+                                className="font-display -skew-x-12 border border-white/60 px-8 py-2 text-lg tracking-widest transition hover:bg-white/10"
+                            >
+                                CHANGE FIGHTERS
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            )}
         </main>
     );
 }
