@@ -11,10 +11,10 @@ export default function MoveButton({ move, disabled, onClick }: MoveButtonProps)
         <button
             onClick={onClick}
             disabled={disabled}
-            className="rounded-md border border-white/15 bg-white/5 px-4 py-3 text-left transition hover:border-red-500 hover:bg-red-950/40 disabled:cursor-not-allowed disabled:opacity-40"
+            className="group border border-white/40 bg-transparent px-4 py-3 text-left transition hover:border-white hover:bg-white hover:text-black disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-white"
         >
             <span className="block font-semibold">{move.name}</span>
-            <span className="mt-1 block text-xs text-gray-400">
+            <span className="mt-1 block text-xs text-gray-400 group-hover:text-black/70">
                 {move.type === "heal" ? `Heal ${move.heal ?? 0}` : `Damage ${move.damage ?? 0}`}
                 {" · "}CE {move.cursedEnergy}
             </span>

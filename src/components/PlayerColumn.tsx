@@ -17,7 +17,7 @@ export default function PlayerColumn({
 }: PlayerColumnProps) {
     return (
         <div className="flex flex-col items-center">
-            <h2 className="font-display -skew-x-12 text-2xl tracking-wider sm:text-3xl">
+            <h2 className="font-display text-2xl tracking-wider sm:text-3xl">
                 {title}
             </h2>
 
@@ -31,7 +31,7 @@ export default function PlayerColumn({
                             disabled={slot.ready}
                             className="group flex flex-col items-center gap-2 disabled:cursor-default"
                         >
-                            <span className="font-display -skew-x-12 text-sm sm:text-lg">
+                            <span className="font-display text-sm sm:text-lg">
                                 {c.id.toUpperCase()}
                             </span>
                             <span
@@ -48,7 +48,7 @@ export default function PlayerColumn({
                                     className="object-cover"
                                 />
                                 {selected && (
-                                    <span className="absolute right-1 top-1 bg-black/70 px-1.5 text-xs font-black italic">
+                                    <span className="absolute right-1 top-1 bg-black/70 px-1.5 text-xs font-black ">
                                         {badge}
                                     </span>
                                 )}
@@ -61,7 +61,7 @@ export default function PlayerColumn({
             <button
                 onClick={onToggleReady}
                 disabled={!slot.picked || (blocked && !slot.ready)}
-                className={`font-display mt-6 -skew-x-12 px-8 py-3 text-3xl transition disabled:opacity-30 ${slot.ready ? "bg-white text-black" : "border border-white/60 hover:bg-white/10"
+                className={`font-display mt-6 px-8 py-3 text-3xl transition disabled:opacity-30 ${slot.ready ? "bg-white text-black" : "border border-white/60 hover:bg-white/10"
                     }`}
             >
                 {slot.ready ? "READY!" : "READY?"}

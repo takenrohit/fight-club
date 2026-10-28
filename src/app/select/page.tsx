@@ -26,7 +26,7 @@ export default function SelectPage() {
 
     return (
         <main className="flex min-h-screen flex-col items-center bg-black px-4 py-8 text-white">
-            <h1 className="font-display -skew-x-12 text-4xl [text-shadow:0_0_20px_rgba(255,255,255,0.6)] sm:text-6xl">
+            <h1 className="font-display text-4xl [text-shadow:0_0_20px_rgba(255,255,255,0.6)] sm:text-6xl">
                 SELECT YOUR FIGHTER
             </h1>
 

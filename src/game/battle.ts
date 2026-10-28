@@ -76,16 +76,25 @@ export function executeTurn(
 
     const result = performMove(attacker, defender, move);
 
+    attacker.cursedEnergy = Math.min(
+        attacker.character.maxCursedEnergy,
+        attacker.cursedEnergy - move.cursedEnergy
+    );
+
     if (defender.hp <= 0) {
         battle.status = "finished";
         battle.winner = battle.currentTurn;
         return result;
     }
 
+
+
     battle.currentTurn =
         battle.currentTurn === "player1" ? "player2" : "player1";
 
     const next = battle[battle.currentTurn];
+
+
     next.cursedEnergy = Math.min(
         next.character.maxCursedEnergy,
         next.cursedEnergy + CE_REGEN_PER_TURN
