@@ -4,52 +4,6 @@ import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { ContactShadows, OrbitControls, useGLTF } from "@react-three/drei";
 
-function Fighter({
-    position,
-    color,
-}: {
-    position: [number, number, number];
-    color: string;
-}) {
-    return (
-        <group position={position}>
-            {/* Body */}
-            <mesh position={[0, 1, 0]}>
-                <capsuleGeometry args={[0.35, 1, 8, 16]} />
-                <meshStandardMaterial color={color} />
-            </mesh>
-
-            {/* Head */}
-            <mesh position={[0, 1.9, 0]}>
-                <sphereGeometry args={[0.28, 24, 24]} />
-                <meshStandardMaterial color={color} />
-            </mesh>
-
-            {/* Arms */}
-            <mesh position={[-0.48, 1.15, 0]} rotation={[0, 0, 0.25]}>
-                <capsuleGeometry args={[0.12, 0.55, 6, 12]} />
-                <meshStandardMaterial color={color} />
-            </mesh>
-
-            <mesh position={[0.48, 1.15, 0]} rotation={[0, 0, -0.25]}>
-                <capsuleGeometry args={[0.12, 0.55, 6, 12]} />
-                <meshStandardMaterial color={color} />
-            </mesh>
-
-            {/* Legs */}
-            <mesh position={[-0.18, 0.25, 0]}>
-                <capsuleGeometry args={[0.14, 0.5, 6, 12]} />
-                <meshStandardMaterial color={color} />
-            </mesh>
-
-            <mesh position={[0.18, 0.25, 0]}>
-                <capsuleGeometry args={[0.14, 0.5, 6, 12]} />
-                <meshStandardMaterial color={color} />
-            </mesh>
-        </group>
-    );
-}
-
 type ArenaProps = {
     player1Id: string;
     player2Id: string;
@@ -108,14 +62,6 @@ function CharacterModel({
 
 
 export default function Arena({ player1Id, player2Id }: ArenaProps) {
-    const characterColors: Record<string, string> = {
-        gojo: "#e5e7eb",
-        sukuna: "#991b1b",
-        yuji: "#ea580c",
-    };
-
-    const player1Color = characterColors[player1Id] ?? "#6366f1";
-    const player2Color = characterColors[player2Id] ?? "#9333ea";
 
     return (
         <div className="h-[500px] w-full overflow-hidden rounded-xl bg-slate-950">

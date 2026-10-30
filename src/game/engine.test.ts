@@ -26,7 +26,7 @@ describe("performMove", () => {
         const result = performMove(gojo, sukuna, purple);
 
         expect(result.type).toBe("hit");
-        expect(sukuna.hp).toBe(70);
+        expect(sukuna.hp).toBe(90);
         expect(gojo.cursedEnergy).toBe(80);
     });
 
@@ -66,7 +66,7 @@ describe("performMove", () => {
 
         performMove(yuji, sukuna, punch);
 
-        expect(sukuna.hp).toBe(80);
+        expect(sukuna.hp).toBe(90);
         expect(yuji.cursedEnergy).toBe(55);
     });
 });

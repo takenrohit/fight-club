@@ -1,4 +1,4 @@
-import type { Character, FighterState, CombatResult, Move } from "./types";
+import type { Character, FighterState, CombatResult } from "./types";
 import { performMove } from "./engine";
 
 export type PlayerId = "player1" | "player2";
