@@ -30,6 +30,16 @@ describe("performMove", () => {
         expect(gojo.cursedEnergy).toBe(80);
     });
 
+    it("RCT never pushes cursed energy above max", () => {
+        const gojo = makeFighter("gojo");
+        gojo.hp = 50;
+        const rct = gojo.character.moves.find((m) => m.id === "rct")!;
+
+        performMove(gojo, makeFighter("sukuna"), rct);
+
+        expect(gojo.cursedEnergy).toBe(100);
+    });
+
     it("King of Curses boosts damage when Sukuna is below half HP", () => {
         vi.spyOn(Math, "random").mockReturnValue(0.5);
         const sukuna = makeFighter("sukuna");

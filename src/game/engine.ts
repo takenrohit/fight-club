@@ -7,7 +7,10 @@ export function performMove(
     move: Move
 ): CombatResult {
 
-    attacker.cursedEnergy -= move.cursedEnergy;
+    attacker.cursedEnergy = Math.min(
+        attacker.character.maxCursedEnergy,
+        attacker.cursedEnergy - move.cursedEnergy
+    );
 
 
     if (move.type === "attack") {
