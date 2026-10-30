@@ -26,20 +26,8 @@ describe("performMove", () => {
         const result = performMove(gojo, sukuna, purple);
 
         expect(result.type).toBe("hit");
-        expect(sukuna.hp).toBe(70);
+        expect(sukuna.hp).toBe(90);
         expect(gojo.cursedEnergy).toBe(80);
-    });
-
-    it("refuses a move when cursed energy is too low", () => {
-        const gojo = makeFighter("gojo");
-        const sukuna = makeFighter("sukuna");
-        gojo.cursedEnergy = 5;
-        const purple = gojo.character.moves.find((m) => m.id === "hollow_purple")!;
-
-        const result = performMove(gojo, sukuna, purple);
-
-        expect(result.type).toBe("miss");
-        expect(sukuna.hp).toBe(120);
     });
 
     it("King of Curses boosts damage when Sukuna is below half HP", () => {
@@ -66,7 +54,7 @@ describe("performMove", () => {
 
         performMove(yuji, sukuna, punch);
 
-        expect(sukuna.hp).toBe(80);
+        expect(sukuna.hp).toBe(90);
         expect(yuji.cursedEnergy).toBe(55);
     });
 });

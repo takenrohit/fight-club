@@ -34,9 +34,9 @@ export default function BattleScreen({ player1Id, player2Id }: BattleScreenProps
     function handleMove(moveId: string) {
         if (battle.status === "finished") return;
 
-        const result = executeTurn(battle, moveId);
+        const { state, result } = executeTurn(battle, moveId);
 
-        setBattle({ ...battle });
+        setBattle(state);
         setLastResult(result);
         setLogs((previous) => [...previous, result.message]);
     }

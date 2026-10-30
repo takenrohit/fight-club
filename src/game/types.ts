@@ -26,12 +26,6 @@ export type Character = {
     moves: Move[];
 }
 
-export type LogEntry = {
-    id: string;
-    message: string;
-    timestamp: number;
-}
-
 export type CombatResult = {
     type: "hit" | "miss" | "crit" | "heal" | "blocked";
     message: string;

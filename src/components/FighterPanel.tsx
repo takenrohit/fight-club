@@ -1,5 +1,4 @@
-import { passives } from "@/game/passives";
-import { Passive } from "@/game/types";
+import type { Passive } from "@/game/types";
 
 type StatBarProps = {
     label: string;

@@ -2,53 +2,22 @@
 
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { ContactShadows, OrbitControls, useGLTF } from "@react-three/drei";
+import { Clone, ContactShadows, OrbitControls, useGLTF } from "@react-three/drei";
 
-function Fighter({
-    position,
-    color,
-}: {
-    position: [number, number, number];
-    color: string;
-}) {
-    return (
-        <group position={position}>
-            {/* Body */}
-            <mesh position={[0, 1, 0]}>
-                <capsuleGeometry args={[0.35, 1, 8, 16]} />
-                <meshStandardMaterial color={color} />
-            </mesh>
+type ModelSettings = {
+    path: string;
+    scale: number;
+    rotationOffset: number;
+    y: number;
+};
 
-            {/* Head */}
-            <mesh position={[0, 1.9, 0]}>
-                <sphereGeometry args={[0.28, 24, 24]} />
-                <meshStandardMaterial color={color} />
-            </mesh>
-
-            {/* Arms */}
-            <mesh position={[-0.48, 1.15, 0]} rotation={[0, 0, 0.25]}>
-                <capsuleGeometry args={[0.12, 0.55, 6, 12]} />
-                <meshStandardMaterial color={color} />
-            </mesh>
-
-            <mesh position={[0.48, 1.15, 0]} rotation={[0, 0, -0.25]}>
-                <capsuleGeometry args={[0.12, 0.55, 6, 12]} />
-                <meshStandardMaterial color={color} />
-            </mesh>
-
-            {/* Legs */}
-            <mesh position={[-0.18, 0.25, 0]}>
-                <capsuleGeometry args={[0.14, 0.5, 6, 12]} />
-                <meshStandardMaterial color={color} />
-            </mesh>
-
-            <mesh position={[0.18, 0.25, 0]}>
-                <capsuleGeometry args={[0.14, 0.5, 6, 12]} />
-                <meshStandardMaterial color={color} />
-            </mesh>
-        </group>
-    );
-}
+const MODEL_SETTINGS: Record<string, ModelSettings> = {
+    gojo: { path: "/models/gojo.glb", scale: 1, rotationOffset: 0, y: 0 },
+    sukuna: { path: "/models/sukuna.glb", scale: 0.25, rotationOffset: 0, y: 0 },
+    yuji: { path: "/models/yuji.glb", scale: 0.78, rotationOffset: 0, y: 1 },
+};
+const settingsFor = (id: string): ModelSettings =>
+    MODEL_SETTINGS[id] ?? MODEL_SETTINGS.gojo;
 
 type ArenaProps = {
     player1Id: string;
@@ -62,41 +31,16 @@ function CharacterModel({
     id: string;
     position: [number, number, number];
 }) {
-    const modelSettings: Record<
-        string,
-        { path: string; scale: number; rotationOffset: number; y: number }
-    > = {
-        gojo: {
-            path: "/models/gojo.glb",
-            scale: 1,
-            rotationOffset: 0,
-            y: 0,
-        },
-        sukuna: {
-            path: "/models/sukuna.glb",
-            scale: 0.25,
-            rotationOffset: 0,
-            y: 0,
-        },
-        yuji: {
-            path: "/models/yuji.glb",
-            scale: 0.78,
-            rotationOffset: 0,
-            y: 1,
-        },
-    };
-
-    const settings = modelSettings[id] ?? modelSettings.gojo;
+    const settings = settingsFor(id);
     const { scene } = useGLTF(settings.path);
 
-    // Left fighter faces right; right fighter faces left.
     const facingRotation =
         (position[0] < 0 ? Math.PI / 2 : -Math.PI / 2) +
         settings.rotationOffset;
 
     return (
         <group position={position}>
-            <primitive
+            <Clone
                 object={scene}
                 scale={settings.scale}
                 position={[0, settings.y, 0]}
@@ -108,14 +52,9 @@ function CharacterModel({
 
 
 export default function Arena({ player1Id, player2Id }: ArenaProps) {
-    const characterColors: Record<string, string> = {
-        gojo: "#e5e7eb",
-        sukuna: "#991b1b",
-        yuji: "#ea580c",
-    };
 
-    const player1Color = characterColors[player1Id] ?? "#6366f1";
-    const player2Color = characterColors[player2Id] ?? "#9333ea";
+    useGLTF.preload(settingsFor(player1Id).path);
+    useGLTF.preload(settingsFor(player2Id).path);
 
     return (
         <div className="h-[500px] w-full overflow-hidden rounded-xl bg-slate-950">

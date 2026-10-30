@@ -1,4 +1,4 @@
-import type { Character, FighterState, CombatResult, Move } from "./types";
+import type { Character, FighterState, CombatResult } from "./types";
 import { performMove } from "./engine";
 
 export type PlayerId = "player1" | "player2";
@@ -36,70 +36,77 @@ export function createBattle(
     };
 }
 
+export type TurnOutcome = {
+    state: BattleState;
+    result: CombatResult;
+};
+
+function resting(fighter: FighterState): FighterState {
+    return {
+        ...fighter,
+        cursedEnergy: Math.min(
+            fighter.character.maxCursedEnergy,
+            fighter.cursedEnergy + CE_REGEN_PER_TURN
+        ),
+    };
+}
+
 export function executeTurn(
     battle: BattleState,
     moveId: string
-): CombatResult {
+): TurnOutcome {
     if (battle.status === "finished") {
         return {
-            type: "miss",
-            message: "The battle has already ended!",
+            state: battle,
+            result: { type: "miss", message: "The battle has already ended!" },
         };
     }
 
-    const attacker = battle.currentTurn === "player1"
-        ? battle.player1
-        : battle.player2;
+    const isP1Turn = battle.currentTurn === "player1";
 
-    const defender = battle.currentTurn === "player1"
-        ? battle.player2
-        : battle.player1;
+    const attacker: FighterState = { ...(isP1Turn ? battle.player1 : battle.player2) };
+    const defender: FighterState = { ...(isP1Turn ? battle.player2 : battle.player1) };
 
-    const move = attacker.character.moves.find(
-        (move) => move.id === moveId
-    );
+    const move = attacker.character.moves.find((m) => m.id === moveId);
 
     if (!move) {
         return {
-            type: "miss",
-            message: "Invalid move!",
+            state: battle,
+            result: { type: "miss", message: "Invalid move!" },
         };
-
     }
 
     if (attacker.cursedEnergy < move.cursedEnergy) {
         return {
-            type: "miss",
-            message: "NOT ENOUGH CURSED ENERGY!",
+            state: battle,
+            result: { type: "miss", message: "NOT ENOUGH CURSED ENERGY!" },
         };
     }
 
     const result = performMove(attacker, defender, move);
 
-    attacker.cursedEnergy = Math.min(
-        attacker.character.maxCursedEnergy,
-        attacker.cursedEnergy - move.cursedEnergy
-    );
-
     if (defender.hp <= 0) {
-        battle.status = "finished";
-        battle.winner = battle.currentTurn;
-        return result;
+        return {
+            state: {
+                ...battle,
+                player1: isP1Turn ? attacker : defender,
+                player2: isP1Turn ? defender : attacker,
+                status: "finished",
+                winner: battle.currentTurn,
+            },
+            result,
+        };
     }
 
+    const nextFighter = resting(defender);
 
-
-    battle.currentTurn =
-        battle.currentTurn === "player1" ? "player2" : "player1";
-
-    const next = battle[battle.currentTurn];
-
-
-    next.cursedEnergy = Math.min(
-        next.character.maxCursedEnergy,
-        next.cursedEnergy + CE_REGEN_PER_TURN
-    );
-
-    return result;
-
+    return {
+        state: {
+            ...battle,
+            player1: isP1Turn ? attacker : nextFighter,
+            player2: isP1Turn ? nextFighter : attacker,
+            currentTurn: isP1Turn ? "player2" : "player1",
+        },
+        result,
+    };
 }
