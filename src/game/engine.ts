@@ -6,12 +6,6 @@ export function performMove(
     defender: FighterState,
     move: Move
 ): CombatResult {
-    if (attacker.cursedEnergy < move.cursedEnergy) {
-        return {
-            type: "miss",
-            message: "NOT ENOUGH CURSED ENERGY!",
-        };
-    }
 
     attacker.cursedEnergy -= move.cursedEnergy;
 

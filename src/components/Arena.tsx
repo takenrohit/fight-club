@@ -2,7 +2,22 @@
 
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { ContactShadows, OrbitControls, useGLTF } from "@react-three/drei";
+import { Clone, ContactShadows, OrbitControls, useGLTF } from "@react-three/drei";
+
+type ModelSettings = {
+    path: string;
+    scale: number;
+    rotationOffset: number;
+    y: number;
+};
+
+const MODEL_SETTINGS: Record<string, ModelSettings> = {
+    gojo: { path: "/models/gojo.glb", scale: 1, rotationOffset: 0, y: 0 },
+    sukuna: { path: "/models/sukuna.glb", scale: 0.25, rotationOffset: 0, y: 0 },
+    yuji: { path: "/models/yuji.glb", scale: 0.78, rotationOffset: 0, y: 1 },
+};
+const settingsFor = (id: string): ModelSettings =>
+    MODEL_SETTINGS[id] ?? MODEL_SETTINGS.gojo;
 
 type ArenaProps = {
     player1Id: string;
@@ -16,41 +31,16 @@ function CharacterModel({
     id: string;
     position: [number, number, number];
 }) {
-    const modelSettings: Record<
-        string,
-        { path: string; scale: number; rotationOffset: number; y: number }
-    > = {
-        gojo: {
-            path: "/models/gojo.glb",
-            scale: 1,
-            rotationOffset: 0,
-            y: 0,
-        },
-        sukuna: {
-            path: "/models/sukuna.glb",
-            scale: 0.25,
-            rotationOffset: 0,
-            y: 0,
-        },
-        yuji: {
-            path: "/models/yuji.glb",
-            scale: 0.78,
-            rotationOffset: 0,
-            y: 1,
-        },
-    };
-
-    const settings = modelSettings[id] ?? modelSettings.gojo;
+    const settings = settingsFor(id);
     const { scene } = useGLTF(settings.path);
 
-    // Left fighter faces right; right fighter faces left.
     const facingRotation =
         (position[0] < 0 ? Math.PI / 2 : -Math.PI / 2) +
         settings.rotationOffset;
 
     return (
         <group position={position}>
-            <primitive
+            <Clone
                 object={scene}
                 scale={settings.scale}
                 position={[0, settings.y, 0]}
@@ -62,6 +52,9 @@ function CharacterModel({
 
 
 export default function Arena({ player1Id, player2Id }: ArenaProps) {
+
+    useGLTF.preload(settingsFor(player1Id).path);
+    useGLTF.preload(settingsFor(player2Id).path);
 
     return (
         <div className="h-[500px] w-full overflow-hidden rounded-xl bg-slate-950">
